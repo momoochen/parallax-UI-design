@@ -1,87 +1,86 @@
 <template>
   <div id="home">
     <div id="wrapper">
-      <div class="big-title">Welcome!</div>
-      <div class="subtitle">Glad to see you here!</div>
-      <form 
-        @submit.prevent="validateBeforeSubmit"
-      >
-        <div class="form">
-          <label class="label-text">Account</label>
-          <input 
-            v-validate="'required|email'" 
-            :class="{'input': true, 'is-danger': errors.has('email') }" 
-            name="email"
-            type="text"
-            placeholder="Enter your email address"
-          >
-          <span v-show="errors.has('email')">{{ errors.first('email') }}</span>
-        </div>
-        <div class="form">
-          <label class="label-text">Password</label>
-          <input 
-            v-validate="'required|password'" 
-            :class="{'input': true, 'is-danger': errors.has('password') }" 
-            name="password"
-            type="password"
-            placeholder="Enter your password"
-          >
-          <span v-show="errors.has('password')">{{ errors.first('password') }}</span>
-        </div>
-        <div class="form">
-          <router-link to="/steptwo">
-            <button 
-              class="submit-button" 
-              type="submit"
-            >Login</button>
-          </router-link>
-        </div>
-      </form>
-      <div class="signup-text">Don't have an account yet?</div>
+      <div class="big-title">GEOMETRY PERSON</div>
+      <div class="subtitle">Find Your Core Personality Type in Shapes!</div>
       <router-link to="/stepone">
         <button 
-          class="submit-button signup" 
-          type="submit"
-        >Signup</button>
+          class="button" 
+        >START</button>
       </router-link>
     </div>
+    <FinalAnimation id="final-animation" />
   </div>
 </template>
 
 <script>
-export default {}
+import FinalAnimation from '@/components/FinalAnimation'
+export default {
+  components: {
+    FinalAnimation
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 #home {
-  padding: 30px 50px 100px 50px;
+  width: 100vw;
+  min-height: 100vh;
+  padding: 50px;
   margin: 0 auto;
-  @media only screen and (max-width: 560px) {
-    padding: 20px 12px 80px 12px;
-  }
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
   #wrapper {
-    margin: 0 auto;
-    background-color: rgba(255, 255, 255, 0.33);
-    padding: 40px;
-    border-radius: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
+    margin: auto auto;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
-    max-width: 480px;
-    @media only screen and (max-width: 560px) {
-      padding: 20px 16px;
-      border-radius: 12px;
+    z-index: 999;
+    .big-title {
+      font-size: 88px;
+    }
+    .subtitle {
+      margin-top: 12px;
+      font-size: 28px;
+      font-family: 'Asap', sans-serif;
+    }
+    .button {
+      width: 200px;
+      height: 44px;
+      border-radius: 44px;
+      border: none;
+      padding: 8px 12px;
+      background: rgb(53, 75, 199);
+      color: white;
+      font-size: 20px;
+      letter-spacing: 0.8px;
+      font-family: 'Dosis', sans-serif;
+      margin-top: 20px;
+      transition: all 1s ease-in-out;
+      cursor: pointer;
+      &:hover {
+        background: rgb(39, 52, 129);
+      }
+    }
+    a {
+      text-decoration: none;
     }
   }
-  .signup {
-    background: rgba(255, 255, 255, 0.1);
-    margin-top: 6px;
-    &:hover {
-      background: rgb(39, 52, 129);
-    }
-  }
-  .signup-text {
-    font-size: 14px;
-    margin: 30px 0 0 0;
+  #final-animation {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 2;
   }
 }
 </style>

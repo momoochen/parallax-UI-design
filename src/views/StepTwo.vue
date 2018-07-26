@@ -1,86 +1,88 @@
 <template>
-  <div id ="step-two">
-    <div id="wrapper">
-      <div class="big-title">General Information</div>
-      <div class="subtitle">Tell us who you are!</div>
-      <form>
-        <div class="form">
-          <label class="label-text">Name</label>
-          <input 
-            v-validate="'required|alpha'" 
-            :class="{'input': true, 'is-danger': errors.has('name') }" 
-            name="name" 
-            type="text"
-            placeholder="example-name"
-          >
-          <span 
-            class="error"
-          >{{ errors.first('name') }}</span>
-        </div>
-        <div class="form">
-          <label class="label-text">Phone</label>
-          <input 
-            v-validate="'required|numeric'" 
-            v-model="phone" 
-            :class="{'input': true, 'is-danger': errors.has('phone') }" 
-            name="phone" 
-            type="text" 
-            placeholder="Enter your phone number"
-          >
-          <span 
-            v-show="errors.has('phone')"
-          >{{ errors.first('phone') }}</span>
-        </div>
-        <div class="form">
-          <label class="label-text">Birth Day(Optional)</label>
-          <input 
-            v-validate="'birthday'" 
-            v-model="birthday" 
-            name="birthday"
-            type="date" 
-          >
-          <span 
-            v-show="errors.has('birthday')"
-          >{{ errors.first('birthday') }}</span>
-        </div>
-        <div class="form">
-          <label class="label-text">Address(Optional)</label>
-          <input 
-            v-validate="'address'" 
-            v-model="city" 
-            name="address"
-            type="text"
-            placeholder="City"
-            class="margin-bottom"
-          >
-          <input 
-            v-validate="'address'" 
-            v-model="addres1" 
-            name="address1"
-            type="text"
-            placeholder="Address1"
-            class="margin-bottom"
-          >
-          <input 
-            v-validate="'address'" 
-            v-model="address2" 
-            name="address2"
-            type="text"
-            placeholder="Address2"
-          >
-          <span 
-            class="error"
-          >{{ errors.first('password') }}</span>
-        </div>
-        <div class="form">
-          <router-link to="/stepthree">
-            <button 
-              class="submit-button" 
-              type="submit"
-            >Submit</button>
-          </router-link>
-        </div>
-      </form>
+  <div id ="step">
+    <transition
+      appear
+      @before-appear="customBeforeAppearHook"
+      @appear="customAppearHook"
+    >
+      <div id="blue-bg">
+        <transition
+          appear
+          @before-appear="animationBeforeAppearHook"
+          @appear="animationAppearHook"
+        >
+          <div id="svg-circle">
+            <svg 
+              width="300" 
+              height="300"
+            >
+              <rect 
+                x="-10" 
+                y="0" 
+                rx="20" 
+                ry="20" 
+                width="200" 
+                height="200"
+                style="fill:white"
+              />
+            </svg>
+            <svg 
+              width="300" 
+              height="300"
+            >
+              <rect 
+                x="150" 
+                y="-30" 
+                rx="20" 
+                ry="20" 
+                width="250" 
+                height="250"
+                style="fill:white"
+              />
+            </svg>
+            <svg 
+              width="100" 
+              height="100"
+            >
+              <rect 
+                x="20" 
+                y="-50" 
+                rx="20" 
+                ry="20" 
+                width="100" 
+                height="100"
+                style="fill:white"
+              />
+            </svg>
+            <svg 
+              width="100" 
+              height="100"
+            >
+              <rect 
+                x="100" 
+                y="20" 
+                rx="20" 
+                ry="20" 
+                width="150" 
+                height="150"
+                style="fill:white"
+              />
+            </svg>
+          </div>
+        </transition>
+      </div>
+    </transition>
+    <div class="question-wrapper">
+      <div class="question">Q2</div>
+      <div class="big-title question-title">“Imagine you’re almost late, but totally lost at a forked road. Which way do you prefer to go?” </div>
+      <div class="subtitle question-subtitle">Choose the answer appeared in your mind instantly</div>
+      <div class="option-wrapper">
+        <router-link to="/stepthree">
+          <div class="option">The left one</div>
+        </router-link>
+        <div class="option">The right one</div>
+        <div class="option">Open Google Map</div>
+      </div>
     </div>
   </div>
 </template>
@@ -88,54 +90,98 @@
 
 
 <script>
-export default {
-  name: 'FormExample',
-  data: () => ({
-    phone: '',
-    name: '',
-    birthday: '',
-    city: '',
-    address1: '',
-    address2: ''
-  }),
-  methods: {
-    validateBeforeSubmit() {
-      this.$validator.validateAll().then(result => {
-        if (result) {
-          // eslint-disable-next-line
-          alert('Form Submitted!');
-          return
-        }
+import Velocity from 'velocity-animate'
 
-        alert('Correct them errors!')
-      })
+export default {
+  methods: {
+    customBeforeAppearHook: function(el) {
+      Velocity(el, { translateX: '-100', opacity: 0 }, { duration: 200 })
+      // el.style.opacity = 0
+    },
+    customAppearHook: function(el, done) {
+      Velocity(
+        el,
+        { width: '50%', opacity: 1 },
+        { duration: 600 },
+        { complete: done }
+      )
+      // Velocity(el, { opacity: 1, fontSize: '1.4em' }, { duration: 300 })
+      // Velocity(el, { fontSize: '1em' }, { complete: done })
+    },
+    animationBeforeAppearHook: function(el) {
+      Velocity(
+        el,
+        { translateY: '10px', translateX: '10px', opacity: 0 },
+        { duration: 600 }
+      )
+    },
+
+    animationAppearHook: function(el, done) {
+      Velocity(
+        el,
+        {
+          translateY: '-500px',
+          translateX: '100px',
+          scale: '6',
+          rotateZ: '180deg',
+          opacity: 1
+        },
+        { duration: 800 }
+      )
+      Velocity(
+        el,
+        {
+          translateY: '-300px',
+          translateX: '50px',
+          scale: '1',
+          rotateZ: '360deg',
+          opacity: 0.3
+        },
+        { duration: 800 },
+        { complete: done }
+      )
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-#step-two {
-  padding: 30px 50px 100px 50px;
-  margin: 0 auto;
-  @media only screen and (max-width: 560px) {
-    padding: 20px 12px 80px 12px;
-  }
-  #wrapper {
-    margin: 0 auto;
-    background-color: rgba(255, 255, 255, 0.53);
-    padding: 40px;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    max-width: 480px;
-    @media only screen and (max-width: 560px) {
-      padding: 20px 16px;
-      border-radius: 12px;
-    }
-    .margin-bottom {
-      margin-bottom: 12px;
-    }
+#step {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#blue-bg {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background: #66bb6a;
+  width: 10%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.step-two {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 999;
+}
+
+#svg-circle {
+  position: absolute;
+  z-index: 999;
+  bottom: 0;
+  left: 0;
+  width: 300px;
+  height: 300px;
+
+  svg {
+    overflow: visible;
   }
 }
 </style>

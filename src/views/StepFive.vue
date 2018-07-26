@@ -3,19 +3,19 @@
     <div id="wrapper">
       <div class="big-title">Congratulations</div>
       <div class="subtitle">Now you are one of us!</div>
-      <CheckAnimation id="check" />
+      <!-- <CheckAnimation id="check" /> -->
     </div>
   </div>
 </template>
 
 
 <script>
-import CheckAnimation from '@/components/CheckAnimation'
-export default {
-  components: {
-    CheckAnimation
-  }
-}
+// import CheckAnimation from '@/components/CheckAnimation'
+// export default {
+//   components: {
+//     CheckAnimation
+//   }
+// }
 </script>
 
 <style lang="scss" scoped>

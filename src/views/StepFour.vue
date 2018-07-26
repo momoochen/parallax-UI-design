@@ -1,89 +1,200 @@
 <template>
-  <div id ="step-three">
-    <div id="wrapper">
-      <div class="big-title">Payment Method</div>
-      <div class="subtitle">Add your credit card information!</div>
-      <form 
-        @submit.prevent="validateBeforeSubmit"
+  <div id="container-wrapper">
+    <div class="pinContainer">
+      <section
+        v-for="(p, index) in panels"
+        :class="`panel-${index}`"
+        :style="{backgroundColor: p.bgColor}"
+        :key="index"
+        class="panel"
       >
-        <div class="form">
-          <label class="label-text">Card Number</label>
-          <input 
-            v-validate="'required'" 
-            v-model="cardnumber"
-            :class="{'input': true, 'is-danger': errors.has('card number') }" 
-            name="cardnumber"
-            type="text"
-            placeholder="Enter your card number"
-          >
-          <span v-show="errors.has('card number')">{{ errors.first('card number') }}</span>
+        <div id ="step">
+          <div class="container-wrapper">
+            <div class="big-title">{{ p.title }}</div>
+            <div class="subtitle">{{ p.subtitle }}</div>
+            <!-- <router-link to="/stepone">
+              <div class="button">{{ p.button }}</div>
+            </router-link> -->
+          </div>
         </div>
-        <div class="form">
-          <label class="label-text">Cardholder Name</label>
-          <input 
-            v-validate="'required'" 
-            v-model="cardHolderName"
-            :class="{'input': true, 'is-danger': errors.has('cardholder name') }" 
-            name="cardholder-name"
-            type="text"
-            placeholder="Enter cardholder name"
-          >
-          <span v-show="errors.has('cardholder name')">{{ errors.first('cardholder name') }}</span>
-        </div>
-        <router-link to="/stepfive">
-          <button 
-            class="submit-button" 
-            type="submit"
-          >Done</button>
-        </router-link>
-      </form>
+        <FinalAnimation id="final-animation" />
+      </section>
     </div>
   </div>
 </template>
 
 
 <script>
-export default {
-  name: 'FormExample',
-  data: () => ({
-    cardnumber: '',
-    cardHolderName: ''
-  }),
-  methods: {
-    validateBeforeSubmit() {
-      this.$validator.validateAll().then(result => {
-        if (result) {
-          // eslint-disable-next-line
-          alert('Form Submitted!');
-          return
-        }
+import Velocity from 'velocity-animate'
+import FinalAnimation from '@/components/FinalAnimation'
 
-        alert('Correct them errors!')
+export default {
+  components: {
+    FinalAnimation
+  },
+  data() {
+    return {
+      panels: [
+        {
+          title: 'ALL DONE!',
+          subtitle: 'Keep scrolling to show the result',
+          bgColor: 'rgb(250, 90, 149)'
+        },
+        {
+          title: 'NOW CACULATING...',
+          subtitle: 'Keep scrolling to show the result',
+          bgColor: '#ef5350'
+        },
+        {
+          title: 'YOU ARE…',
+          subtitle: 'Keep scrolling to show the result',
+          bgColor: '#FF3c82'
+        },
+        {
+          title: 'TRIANGLE',
+          subtitle: 'Your personality type is',
+          button: 'Try again',
+          bgColor: '#66bb6a'
+        }
+      ]
+    }
+  },
+  mounted() {
+    this.$nextTick(this.pinContainerScene)
+  },
+  destroyed() {
+    // Destroy ScrollMagic when our component is removed from DOM
+    this.$ksvuescr.$emit('destroy')
+  },
+  methods: {
+    pinContainerScene() {
+      const Length = this.panels.length
+
+      // Create a new Timeline (equivalent to new TimelineMax())
+      const tl = new this.$gsap.TimelineMax()
+
+      for (var i = 0; i < Length; i++) {
+        // For each panel in this.panels array:
+        let animFrom
+        switch (i) {
+          case 0:
+            break
+          case 1:
+            animFrom = { x: '-100%' } // Second panel comes from the left
+            break
+          case 2:
+            animFrom = { x: '100%' } // Third one comes from the right
+            break
+          case 3:
+            animFrom = { y: '-100%' } // Finally, the last one comes from the top
+            break
+        }
+        if (i !== 0) {
+          // For each panel except the one whom index is 0, create the tween and add it to the tl timeline.
+          // (To use GSAP easings, just prefix their name with this.$gsap)
+          tl.fromTo(`section.panel-${i}`, 1.5, animFrom, {
+            x: '0%',
+            y: '0%',
+            ease: this.$gsap.Linear.easeNone
+          })
+        }
+      }
+
+      // create scene and set its params
+      const scene = new this.$scrollmagic.Scene({
+        triggerElement: '.pinContainer',
+        triggerHook: 'onLeave',
+        duration: `${Length * 100}%`
       })
+        .setPin('.pinContainer')
+        .setTween(tl)
+
+      // Add scene to ScrollMagic controller by emiting an 'addScene' event on vm.$ksvuescr (which is our global event bus)
+      this.$ksvuescr.$emit('addScene', 'pinContainerScene', scene)
+    },
+    animationBeforeAppearHook: function(el) {
+      Velocity(
+        el,
+        { translateY: '10px', translateX: '10px', opacity: 0 },
+        { duration: 600 }
+      )
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-#step-three {
-  padding: 30px 50px 100px 50px;
-  margin: 0 auto;
-  @media only screen and (max-width: 560px) {
-    padding: 20px 12px 80px 12px;
-  }
-  #wrapper {
-    margin: 0 auto;
-    background-color: rgba(255, 255, 255, 0.53);
-    padding: 40px;
-    border-radius: 20px;
+.pinContainer {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+.panel {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  z-index: 1;
+}
+#step {
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 99;
+  .container-wrapper {
+    height: 100%;
+    width: 100%;
+    margin: auto auto;
+    text-align: center;
     display: flex;
+    justify-content: center;
     flex-direction: column;
-    max-width: 480px;
-    @media only screen and (max-width: 560px) {
-      padding: 20px 16px;
-      border-radius: 12px;
+    align-items: center;
+    .big-title {
+      font-size: 88px;
     }
+    .subtitle {
+      margin-top: 12px;
+      font-size: 28px;
+      font-family: 'Asap', sans-serif;
+    }
+    .button {
+      margin: 0 auto;
+      width: 200px;
+      height: 44px;
+      border-radius: 44px;
+      border: none;
+      padding: 8px 12px;
+      background: rgb(53, 75, 199);
+      color: white;
+      font-size: 20px;
+      font-family: 'Dosis', sans-serif;
+      margin-top: 20px;
+      transition: all 1s ease-in-out;
+      cursor: pointer;
+      &:hover {
+        background: rgb(39, 52, 129);
+      }
+    }
+    a {
+      text-decoration: none;
+    }
+  }
+  #final-animation {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 2;
   }
 }
 </style>

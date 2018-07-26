@@ -1,27 +1,20 @@
 <template>
-  <div class="steps">
-    <BaseStep />
-    <transition 
-      name="router-animation" 
-      enter-active-class="animated zoomIn" 
-      leave-active-class="animated fadeOutUp"
-      mode="out-in"
-    >
-    
-      <router-view />
-    </transition>
-  </div>
+  <transition 
+    name="router-animation" 
+    enter-active-class="animated fadeIn" 
+    leave-active-class="animated fadeOutUp"
+    mode="out-in"
+  >
+    <router-view />
+  </transition>
 </template>
 
 <script>
-import BaseStep from '@/components/BaseStep'
-
-export default {
-  components: {
-    BaseStep
-  }
-}
+export default {}
 </script>
 
 <style lang="scss" scoped>
+.animated {
+  animation-duration: 0.6s;
+}
 </style>

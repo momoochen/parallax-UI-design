@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import WelcomeHome from './views/WelcomeHome'
-import StepsWrapper from './views/StepsWrapper'
 import StepOne from './views/StepOne'
 import StepTwo from './views/StepTwo'
 import StepThree from './views/StepThree'
 import StepFour from './views/StepFour'
 import StepFive from './views/StepFive'
+import StepsWrapper from './views/StepsWrapper'
 
 Vue.use(Router)
 

@@ -26,7 +26,7 @@ module.exports = {
     }],
     'vue/html-closing-bracket-spacing': 'error',
     'vue/prop-name-casing': 'error',
-    'vue/script-indent': 'error',
+    // 'vue/script-indent': 'error', // conflicts with prettier
   },
   parserOptions: {
     parser: 'babel-eslint'

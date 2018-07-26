@@ -1,79 +1,122 @@
 <template>
-  <div id="step-one">
-    <div id="wrapper">
-      <div class="big-title">Create Account</div>
-      <div class="subtitle">Glad to see you here!</div>
-      <form 
-        @submit.prevent="validateBeforeSubmit"
-      >
-        <div class="form">
-          <label class="label-text">Account</label>
-          <input 
-            v-validate="'required|email'"
-            :class="{'input': true, 'is-danger': errors.has('email') }" 
-            name="email"
-            type="text"
-            placeholder="Enter your email address"
-          >
-          <span v-show="errors.has('email')">{{ errors.first('email') }}</span>
-        </div>
-        <div class="form">
-          <label class="label-text">Password</label>
-          <input 
-            v-validate="'required|length:8'" 
-            :class="{'input': true, 'is-danger': errors.has('password') }" 
-            v-model="password"
-            name="password"
-            type="password"
-            placeholder="Enter your password"
-          >
-          <span v-show="errors.has('password')">{{ errors.first('password') }}</span>
-        </div>
-        <div class="form">
-          <label class="label-text">Confirm Password</label>
-          <input
-            v-validate="'required|confirmed:password'" 
-            :class="{'input': true, 'is-danger': errors.has('password') }" 
-            v-model="passwordConfirmed" 
-            name="confirmPassword"
-            type="password"
-            placeholder="Enter your password again"
-            target="password"
-          >
-          <span v-show="errors.has('password')">{{ errors.first('password') }}</span>
-        </div>
-        <div class="form">
-          <router-link to="/steptwo">
-            <button 
-              class="submit-button" 
-              type="submit"
-            >Submit</button>
-          </router-link>
-        </div>
-      </form>
+  <div id ="step-one">
+    <transition
+      appear
+      @before-appear="customBeforeAppearHook"
+      @appear="customAppearHook"
+    >
+      <div id="blue-bg">
+        <transition
+          appear
+          @before-appear="animationBeforeAppearHook"
+          @appear="animationAppearHook"
+        >
+          <div id="svg-circle1">
+            <svg 
+              width="300" 
+              height="300"
+            >
+              <circle 
+                cx="150" 
+                cy="100" 
+                r="80"
+                fill="white"
+              />
+            </svg>
+            <svg 
+              width="300" 
+              height="300"
+            >
+              <circle
+                cx="10" 
+                cy="10" 
+                r="100"
+                fill="white"
+              />
+            </svg>
+            <svg 
+              width="300" 
+              height="300"
+            >
+              <circle
+                cx="-150" 
+                cy="-50" 
+                r="120"
+                fill="white"
+              />
+            </svg>
+          </div>
+        </transition>
+      </div>
+    </transition>
+    <div class="question-wrapper">
+      <div class="question">Q1</div>
+      <div class="big-title question-title">“If one day you get a gift that can change the rule of the world, which ability will you choose?” </div>
+      <div class="subtitle question-subtitle">Choose the answer appeared in your mind instantly</div>
+      <div class="option-wrapper">
+        <router-link to="/steptwo">
+          <div class="option">Destroy all humans in the world</div>
+        </router-link>
+        <div class="option">Destroy all humans in the world</div>
+        <div class="option">Destroy all humans in the world</div>
+      </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'FormExample',
-  data: () => ({
-    email: '',
-    password: '',
-    passwordConfirmed: ''
-  }),
-  methods: {
-    validateBeforeSubmit() {
-      this.$validator.validateAll().then(result => {
-        if (result) {
-          // eslint-disable-next-line
-          alert('Form Submitted!');
-          return
-        }
 
-        alert('Correct them errors!')
-      })
+
+<script>
+import Velocity from 'velocity-animate'
+
+export default {
+  methods: {
+    customBeforeAppearHook: function(el) {
+      Velocity(el, { translateX: '100', opacity: 0 }, { duration: 200 })
+      // el.style.opacity = 0
+    },
+    customAppearHook: function(el, done) {
+      Velocity(
+        el,
+        { width: '50%', opacity: 1 },
+        { duration: 600 },
+        { complete: done }
+      )
+      // Velocity(el, { opacity: 1, fontSize: '1.4em' }, { duration: 300 })
+      // Velocity(el, { fontSize: '1em' }, { complete: done })
+    },
+    animationBeforeAppearHook: function(el) {
+      Velocity(
+        el,
+        { translateY: '10px', translateX: '10px', opacity: 0 },
+        { duration: 600 }
+      )
+    },
+
+    animationAppearHook: function(el, done) {
+      Velocity(
+        el,
+        {
+          translateY: '-500px',
+          translateX: '100px',
+          scale: '6',
+          rotateZ: '180deg',
+          opacity: 1
+        },
+        { duration: 800 }
+      )
+      Velocity(
+        el,
+        {
+          translateY: '-300px',
+          translateX: '50px',
+          scale: '1',
+          rotateZ: '360deg',
+          opacity: 0.3
+        },
+        { duration: 800 },
+        { complete: done }
+      )
     }
   }
 }
@@ -81,23 +124,32 @@ export default {
 
 <style lang="scss" scoped>
 #step-one {
-  padding: 30px 50px 100px 50px;
-  margin: 0 auto;
-  @media only screen and (max-width: 560px) {
-    padding: 20px 12px 80px 12px;
-  }
-  #wrapper {
-    margin: 0 auto;
-    background-color: rgba(255, 255, 255, 0.53);
-    padding: 40px;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    max-width: 480px;
-    @media only screen and (max-width: 560px) {
-      padding: 20px 16px;
-      border-radius: 12px;
-    }
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
+}
+
+#blue-bg {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background: #29b6f6;
+  width: 10px;
+  height: 100%;
+  overflow: hidden;
+}
+
+#svg-circle1 {
+  position: absolute;
+  z-index: 999;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+
+  svg {
+    overflow: visible;
   }
 }
 </style>
