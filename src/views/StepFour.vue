@@ -8,16 +8,25 @@
         :key="index"
         class="panel"
       >
-        <div id ="step">
+        <div class="step">
           <div class="container-wrapper">
             <div class="big-title">{{ p.title }}</div>
             <div class="subtitle">{{ p.subtitle }}</div>
-            <!-- <router-link to="/stepone">
-              <div class="button">{{ p.button }}</div>
-            </router-link> -->
           </div>
         </div>
-        <FinalAnimation id="final-animation" />
+        <FinalAnimation 
+          v-if="index ===0" 
+          class="final-animation"
+        />
+        <router-link 
+          v-if="index ===2" 
+          to="/stepone"
+        >
+          <button 
+            v-if="index ===2" 
+            class="button"
+          >Try Again</button>
+        </router-link>
       </section>
     </div>
   </div>
@@ -41,14 +50,9 @@ export default {
           bgColor: 'rgb(250, 90, 149)'
         },
         {
-          title: 'NOW CACULATING...',
-          subtitle: 'Keep scrolling to show the result',
-          bgColor: '#ef5350'
-        },
-        {
           title: 'YOU ARE…',
           subtitle: 'Keep scrolling to show the result',
-          bgColor: '#FF3c82'
+          bgColor: '#29b6f6'
         },
         {
           title: 'TRIANGLE',
@@ -142,7 +146,7 @@ export default {
   color: white;
   z-index: 1;
 }
-#step {
+.step {
   top: 0;
   left: 0;
   height: 100%;
@@ -166,35 +170,37 @@ export default {
       font-size: 28px;
       font-family: 'Asap', sans-serif;
     }
-    .button {
-      margin: 0 auto;
-      width: 200px;
-      height: 44px;
-      border-radius: 44px;
-      border: none;
-      padding: 8px 12px;
-      background: rgb(53, 75, 199);
-      color: white;
-      font-size: 20px;
-      font-family: 'Dosis', sans-serif;
-      margin-top: 20px;
-      transition: all 1s ease-in-out;
-      cursor: pointer;
-      &:hover {
-        background: rgb(39, 52, 129);
-      }
-    }
-    a {
-      text-decoration: none;
-    }
   }
-  #final-animation {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    z-index: 2;
+}
+
+.button {
+  margin: 0 auto;
+  width: 200px;
+  height: 44px;
+  border-radius: 44px;
+  border: none;
+  padding: 8px 12px;
+  background: rgb(53, 75, 199);
+  color: white;
+  font-size: 20px;
+  font-family: 'Dosis', sans-serif;
+  margin-top: 260px;
+  transition: all 1s ease-in-out;
+  cursor: pointer;
+  &:hover {
+    background: rgb(39, 52, 129);
   }
+}
+a {
+  text-decoration: none;
+}
+
+.final-animation {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
 }
 </style>

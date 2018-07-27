@@ -107,7 +107,7 @@ export default {
           rotateZ: '-315deg',
           opacity: 0.8
         },
-        { duration: 1200, loop: 2 }
+        { duration: 6000 }
       )
       Velocity(
         el,
@@ -118,7 +118,7 @@ export default {
           rotateZ: '360deg',
           opacity: 1
         },
-        { duration: 800 },
+        { duration: 3000, loop: true },
         { complete: done }
       )
     }
